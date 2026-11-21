@@ -28,6 +28,8 @@ export interface Slide {
 const ALL_SLIDES: Slide[] = [
   { slug: "intro", title: "Company Brain", act: "Intro", steps: 2, bg: "wheat",
     notes: ["Name, tagline. Then the sources fly in: email, news, documents, each tagged with who may see it and how far to trust it. Then claims come out, tied to a quote. The rest of the talk is built elsewhere."] },
+  { slug: "chat", title: "Meet the chat", act: "The chat", steps: 0,
+    notes: ["Live: the chat. Pick who is asking. Answers cite their sources, and where the memory does not know, it says so."] },
   // ---- the problem ------------------------------------------------------------------------------
   { slug: "title", hidden: true, backup: true, title: "Two ingredients", act: "I · The problem", steps: 1, bg: "wheat",
     notes: ["Don't start with the product. Pasta: water and semolina. Pause. Then the +18%.", "~15 s."] },
