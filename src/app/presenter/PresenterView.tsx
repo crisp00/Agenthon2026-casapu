@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../slides/slides.css";
 import { ROLES, ROLE_ORDER } from "@/lib/scenario/data";
 import { CHECKS, checks } from "@/lib/scenario/engine";
@@ -13,10 +13,24 @@ export default function PresenterView() {
   const s = useScenario();
   const c = checks(s);
   const [resetting, setResetting] = useState<string | null>(null);
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (!armed) return;
+    const t = setTimeout(() => setArmed(false), 6000);
+    return () => clearTimeout(t);
+  }, [armed]);
 
-  /** Resets the scripted scenario AND the real app: database, notices, chats, source folders. */
+  /**
+   * Resets the scripted scenario AND the real app: database, notices, chats, source folders.
+   * Two clicks instead of a browser dialog: dialogs are blocked in some embedded browsers, which made the button look dead.
+   */
   async function resetAll() {
-    if (!window.confirm("Reset the whole demo? Claims, notices, rejections and added sources are removed; chats are cleared.")) return;
+    if (!armed) {
+      setArmed(true);
+      setResetting(null);
+      return;
+    }
+    setArmed(false);
     setResetting("Resetting…");
     dispatch({ type: "reset" });
     try {
@@ -26,6 +40,7 @@ export default function PresenterView() {
         setResetting(`Not reset: ${d.error ?? "something went wrong"}`);
         return;
       }
+      setResetting("Reset. Reloading…");
       window.location.reload();
     } catch (e) {
       setResetting(`Not reset: ${(e as Error).message}`);
@@ -41,7 +56,7 @@ export default function PresenterView() {
         <div className="row">
           <button className="sl-btn" disabled={s.events.includes("report")} onClick={() => dispatch({ type: "event", name: "report" })}>▶ Market report arrives</button>
           <button className="sl-btn" disabled={s.events.includes("correction")} onClick={() => dispatch({ type: "event", name: "correction" })}>▶ Correction arrives</button>
-          <button className="sl-btn bad" onClick={resetAll}>Reset the demo</button>
+          <button className="sl-btn bad" onClick={resetAll}>{armed ? "Click again to wipe claims, notices, chats and added sources" : "Reset the demo"}</button>
         </div>
         {resetting && <p className="muted small" role="status">{resetting}</p>}
         <p className="muted small">Fired: {s.events.length ? s.events.join(", ") : "none yet"} · simulated clock {String(Math.floor(s.clock / 60)).padStart(2, "0")}:{String(s.clock % 60).padStart(2, "0")}</p>
