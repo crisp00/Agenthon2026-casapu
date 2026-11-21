@@ -104,6 +104,10 @@ export default function Shell({ children }: { children: ReactNode }) {
     return () => ch.close();
   }, [slug, step]);
 
+  const atLast = !slide?.backup && idx + 1 >= MAIN_COUNT;
+  const canPrev = idx >= 0 && (step > 0 || idx > 0);
+  const canNext = idx >= 0 && (step < steps || !atLast);
+
   const total = slide?.backup ? SLIDES.length - MAIN_COUNT : MAIN_COUNT;
   const local = slide?.backup ? idx - MAIN_COUNT : idx;
   const progress = idx >= 0 ? ((local + (steps ? step / steps : 1)) / total) * 100 : 0;
@@ -142,6 +146,8 @@ export default function Shell({ children }: { children: ReactNode }) {
       )}
 
       <div className="sl-foot">
+        <button className="sl-navbtn" aria-label="Previous" title="Previous (←)" disabled={!canPrev} onClick={() => api.current.prev()}>‹</button>
+        <button className="sl-navbtn" aria-label="Next" title="Next (→)" disabled={!canNext} onClick={() => api.current.next()}>›</button>
         <span className="sl-counter">{idx >= 0 ? `${slide?.backup ? "BACKUP " : ""}${String(local + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}` : ""}</span>
       </div>
       <div className="sl-progress" style={{ width: `${progress}%` }} />

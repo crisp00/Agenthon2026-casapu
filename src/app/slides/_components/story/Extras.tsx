@@ -14,7 +14,7 @@ const IDEAS: [string, string, string, string][] = [
 export function IdeasStory() {
   return (
     <div className="st-full" style={{ alignContent: "center" }}>
-      <div className="sl-eyebrow">Backup · Ideas worth stealing</div>
+      <div className="sl-eyebrow">Under the hood</div>
       <h1 style={{ fontSize: "1.9em", margin: ".25em 0 .9em", lineHeight: 1.08 }}>
         Three ideas <span className="st-hl">worth stealing.</span>
       </h1>
@@ -62,7 +62,7 @@ function Column({ title, tag, cls, items, at }: { title: string; tag: string; cl
 export function ScopeStory() {
   return (
     <div className="st-full" style={{ alignContent: "center" }}>
-      <Left eyebrow="Backup · Scope" title={<>What is real, what is staged, <span className="st-hl">what is missing.</span></>} />
+      <Left eyebrow="Scope" title={<>What is real, what is staged, <span className="st-hl">what is missing.</span></>} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1em", marginTop: ".4em", alignItems: "stretch" }}>
         <Column title="Built and running" tag="the live app" cls="ok" items={REAL} at={0} />
         <Column title="Staged in the slides" tag="scripted" cls="warn" items={SCRIPTED} at={1} />

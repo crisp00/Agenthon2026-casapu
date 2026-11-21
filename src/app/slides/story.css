@@ -41,7 +41,11 @@
 .sl-act { font: 500 11px var(--sl-mono), monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .sl-stage { position: relative; z-index: 2; animation: st-enter .55s cubic-bezier(.2, .7, .2, 1) both; }
 @keyframes st-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.sl-foot { position: absolute; z-index: 3; right: clamp(20px, 3.5vw, 64px); bottom: 12px; }
+.sl-foot { position: absolute; z-index: 3; right: clamp(20px, 3.5vw, 64px); bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.sl-navbtn { width: 26px; height: 26px; display: grid; place-items: center; padding: 0 0 2px; border: 1px solid var(--line); border-radius: 50%; background: color-mix(in srgb, var(--card) 70%, transparent); color: var(--muted); font-size: 17px; line-height: 1; cursor: pointer; transition: all .15s; }
+.sl-navbtn:hover:not(:disabled) { color: var(--fg); border-color: var(--accent); }
+.sl-navbtn:disabled { opacity: .3; cursor: default; }
+.sl-foot .sl-counter { margin-left: 6px; }
 .sl-counter { font: 500 12px var(--sl-mono), monospace; letter-spacing: .1em; color: var(--muted); }
 .sl-progress { position: absolute; z-index: 4; left: 0; bottom: 0; height: 3px; background: var(--accent); transition: width .6s ease; }
 .sl-event { bottom: 40px; }

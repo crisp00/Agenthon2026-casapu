@@ -130,4 +130,5 @@ export const SLIDE_ICONS: Record<string, ReactNode> = {
   "live-notices": svg(<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0" />),
   "live-reject": svg(<path d="M18 6 6 18M6 6l12 12" />),
   "live-ask": svg(<path d="M21 11.5a8.4 8.4 0 0 1-12.2 7.5L3 20.5l1.6-5.3A8.4 8.4 0 1 1 21 11.5z" />),
+  thanks: svg(<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" />),
 };
