@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { setPrincipalId, useActor } from "../components/principal";
+import { setPrincipalId, useActor, useEpoch } from "../components/principal";
 import { AssistantMessage, Typing, UserMessage, type Msg } from "./Message";
 import { NoticeFeed, type Notice } from "./Notices";
 import { ArrowIcon, Avatar, BrainMark, PlusIcon, SendIcon } from "./ui";
@@ -11,7 +11,8 @@ type Knowledge = { approved: { claim_id: string; sentence: string; labels: strin
 
 // ---- per-identity conversations, kept in this browser only ----
 const EVT = "brain-chat-store";
-const key = (id: string) => `brain-chat:${id}`;
+let EPOCH = "0"; // see useEpoch: conversations are kept per demo epoch
+const key = (id: string) => `brain-chat:${EPOCH}:${id}`;
 const readRaw = (id: string) => {
   try {
     return localStorage.getItem(key(id)) ?? "[]";
@@ -52,6 +53,13 @@ const clearanceLabel = (c: string[]) => (c.includes("*") ? ["everything"] : c);
 export default function ChatView() {
   const { pid, me, principals } = useActor();
   const people = principals ?? [];
+  const epoch = useEpoch();
+  useEffect(() => {
+    if (epoch !== null && epoch !== EPOCH) {
+      EPOCH = epoch;
+      window.dispatchEvent(new Event(EVT));
+    }
+  }, [epoch]);
   const messages = useChat(pid);
 
   const [know, setKnow] = useState<{ pid: string; data: Knowledge } | null>(null);

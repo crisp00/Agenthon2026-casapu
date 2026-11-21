@@ -74,6 +74,18 @@ export const SLIDES: Slide[] = [
   { slug: "ingest", title: "How a source enters", act: "Backup · The engine", steps: 2, backup: true, notes: ["A file in a folder. It only ever appends."] },
   { slug: "gate", title: "The gate", act: "Backup · The engine", steps: 2, backup: true, notes: ["Plain code, no model. A wrong value bounces back."] },
   { slug: "ledger", title: "The ledger", act: "Backup · The engine", steps: 2, backup: true, notes: ["Append-only, one hash chain, verify()."] },
+  // ---- the live demo: real pages of the app, driven by hand ------------------------------------
+  { slug: "live-add", title: "Add a news item", act: "Live demo · 1 of 5", backup: true,
+    notes: ["Live: the New source page. Write the request, review the draft, add it. Then press the right arrow."] },
+  { slug: "live-claims", title: "The claim appears", act: "Live demo · 2 of 5", backup: true,
+    notes: ["Live: the Claims page. Watch the news become claims, with their quotes. Trusted by default."] },
+  { slug: "live-notices", title: "People get their notices", act: "Live demo · 3 of 5", backup: true,
+    notes: ["Live: the Chat. Heads-up cards appear on their own, per person. Switch identity to show who is told and who is not."] },
+  { slug: "live-reject", title: "Reject the news", act: "Live demo · 4 of 5", backup: true,
+    notes: ["Live: back to Claims, as the curator. Reject the news claim."] },
+  { slug: "live-ask", title: "Ask the memory", act: "Live demo · 5 of 5", backup: true,
+    notes: ["Live: the Chat again. The notices built on it show as cancelled or updated. Ask questions; the rejected claim is gone."] },
+
   { slug: "ideas", title: "Three ideas worth stealing", act: "Backup · Ideas", steps: 2, backup: true,
     notes: ["For questions on the technology. One at a time: atomic claims with evidence and the interpretation fenced to one tier; the immutable store that can be regenerated, with policy applied at read time; the deterministic gate. Be straight that cascading recompute is not built yet."] },
   { slug: "scope", title: "Real, staged, missing", act: "Backup · Scope", steps: 2, backup: true,

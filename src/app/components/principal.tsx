@@ -13,6 +13,7 @@ const EVENT = "brain-principal";
 
 // ---- the list of principals, fetched once from the server
 let cached: Principal[] | null = null;
+let cachedEpoch: string | null = null;
 let inflight: Promise<void> | null = null;
 const listeners = new Set<() => void>();
 
@@ -22,6 +23,7 @@ function load() {
     .then((r) => r.json())
     .then((d) => {
       cached = d.principals ?? null;
+      cachedEpoch = typeof d.epoch === "string" ? d.epoch : "0";
     })
     .catch(() => {
       /* leave null: the pages show their loading state */
@@ -43,6 +45,21 @@ export function usePrincipals(): Principal[] | null {
       return () => listeners.delete(cb);
     },
     () => cached,
+    () => null,
+  );
+}
+
+/** Changes when the demo is reset, so a browser stops showing conversations from before it. Null while loading. */
+export function useEpoch(): string | null {
+  useEffect(() => {
+    load();
+  }, []);
+  return useSyncExternalStore(
+    (cb) => {
+      listeners.add(cb);
+      return () => listeners.delete(cb);
+    },
+    () => cachedEpoch,
     () => null,
   );
 }
