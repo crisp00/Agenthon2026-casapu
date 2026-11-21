@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import "../slides/slides.css";
 import { ROLES, ROLE_ORDER } from "@/lib/scenario/data";
 import { CHECKS, checks } from "@/lib/scenario/engine";
@@ -11,18 +12,38 @@ import { dispatch, useScenario } from "@/lib/scenario/store";
 export default function PresenterView() {
   const s = useScenario();
   const c = checks(s);
+  const [resetting, setResetting] = useState<string | null>(null);
+
+  /** Resets the scripted scenario AND the real app: database, notices, chats, source folders. */
+  async function resetAll() {
+    if (!window.confirm("Reset the whole demo? Claims, notices, rejections and added sources are removed; chats are cleared.")) return;
+    setResetting("Resetting…");
+    dispatch({ type: "reset" });
+    try {
+      const r = await fetch("/api/demo/reset", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ confirm: "reset" }) });
+      const d = await r.json();
+      if (!r.ok) {
+        setResetting(`Not reset: ${d.error ?? "something went wrong"}`);
+        return;
+      }
+      window.location.reload();
+    } catch (e) {
+      setResetting(`Not reset: ${(e as Error).message}`);
+    }
+  }
   return (
     <div className="sl-presenter">
       <h1 style={{ fontSize: "1.6rem", margin: 0 }}>Presenter controls</h1>
-      <p className="muted">Everything on the slides is driven by one scenario state. Reset it before going on stage.</p>
+      <p className="muted">Reset the demo before going on stage: it restores the scripted scenario and the real app (claims, notices, chats, added sources).</p>
 
       <div className="sl-card">
         <h2>Events</h2>
         <div className="row">
           <button className="sl-btn" disabled={s.events.includes("report")} onClick={() => dispatch({ type: "event", name: "report" })}>▶ Market report arrives</button>
           <button className="sl-btn" disabled={s.events.includes("correction")} onClick={() => dispatch({ type: "event", name: "correction" })}>▶ Correction arrives</button>
-          <button className="sl-btn bad" onClick={() => dispatch({ type: "reset" })}>Reset the demo</button>
+          <button className="sl-btn bad" onClick={resetAll}>Reset the demo</button>
         </div>
+        {resetting && <p className="muted small" role="status">{resetting}</p>}
         <p className="muted small">Fired: {s.events.length ? s.events.join(", ") : "none yet"} · simulated clock {String(Math.floor(s.clock / 60)).padStart(2, "0")}:{String(s.clock % 60).padStart(2, "0")}</p>
       </div>
 

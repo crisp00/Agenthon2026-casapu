@@ -8,7 +8,7 @@ DATA="${DEMO_DATA_DIR:-data}"
 cd "$(dirname "$0")/.."
 
 if [ -e "$DATA/brain.db" ] && lsof "$DATA/brain.db" "$DATA/brain.db-wal" >/dev/null 2>&1; then
-  echo "The database is open: stop the dev server first, then run this again." >&2
+  echo "The dev server has the database open. Use the Reset button on /presenter (it works while the server runs), or stop the server and run this again." >&2
   exit 1
 fi
 
